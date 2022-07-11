@@ -6,7 +6,7 @@ const app = express();
 var server = http.createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.APP_URL,
   },
 });
 const Dbconnect = require("./database");
@@ -16,7 +16,7 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 const corsOption = {
   credentials: true,
-  origin: ["http://localhost:3000"],
+  origin: [process.env.APP_URL],
 };
 
 const PORT = process.env.PORT || 5500;
