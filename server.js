@@ -1,8 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const router = require("./routes");
+const http = require('http');
 const app = express();
-const io = require("socket.io")(5000, {
+var server = http.createServer(app);
+const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000",
   },
@@ -26,7 +28,7 @@ app.use(router);
 app.get("/", (req, res) => {
   res.send("hello from server");
 });
-app.listen(PORT, () => console.log(`Listening on port  ${PORT}`));
+server.listen(PORT, () => console.log(`Listening on port  ${PORT}`));
 
 io.on("connection", (socket) => {
   const id = socket.handshake.query.id;
