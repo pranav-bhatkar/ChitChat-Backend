@@ -1,0 +1,17 @@
+POST http://localhost:5500/api/send-otp HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "pranavbhatkar789@gmail.com"
+}
+
+###
+
+POST http://localhost:5500/api/verify-otp HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "pranavbhatkar789@gmail.com",
+  "otp": 6233,
+  "hash": "8cc2bde004afa8eeb3627c67c92b99742f10507b5d4f722cdf8cdc9ea4c65b18.1633675903316"
+}
