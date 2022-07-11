@@ -21,14 +21,14 @@ class Otpservice {
     return otp;
   }
 
-  async sendBySms(phone, otp) {
-    return await twilio.messages.create({
-      to: phone,
-      from: process.env.SMS_FORM_NUMBER,
-      body: `Your ChitChat OTP is ${otp} 
-                NOTE:- Do not shere this code with any one else..!`,
-    });
-  }
+  // async sendBySms(phone, otp) {
+  //   return await twilio.messages.create({
+  //     to: phone,
+  //     from: process.env.SMS_FORM_NUMBER,
+  //     body: `Your ChitChat OTP is ${otp} 
+  //               NOTE:- Do not shere this code with any one else..!`,
+  //   });
+  // }
   async sendByEmail(email, otp) {
 const mailOptions = {
   from: 'techxpo.contact@gmail.com',
