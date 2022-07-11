@@ -8,14 +8,14 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
 class TokenService {
    generateTokens(payload) {
       const accessToken = jwt.sign(payload, accessTokenSecret, {
-         expiresIn: '1m'
+         expiresIn: '1h'
       } );
       
       const refreshToken = jwt.sign(payload, refreshTokenSecret, {
          expiresIn: '1y'
       } );
-
-      return { accessToken, refreshToken }
+     
+     return { accessToken, refreshToken }
 
 
    }
@@ -34,7 +34,7 @@ class TokenService {
       return jwt.verify(token, accessTokenSecret);
    } 
    async verifyRefreshToken(refreshToken) {
-        return jwt.verify(refreshToken, refreshTokenSecret);
+      return jwt.verify(refreshToken, refreshTokenSecret);
     }
   async findRefreshToken(userId, refreshToken) {
         return await refreshModule.findOne({

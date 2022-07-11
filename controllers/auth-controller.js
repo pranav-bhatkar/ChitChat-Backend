@@ -5,11 +5,9 @@ const userServices = require("../services/user-services");
 const tokenService = require("../services/token-service");
 const UserDto = require("../dtos/userDtos");
 
-
 class Authcontroller {
   async sendOtp(req, res) {
     const { email } = req.body;
-
     if (!email) {
       res.status(400).json({ message: "phone number is required..!" });
     }
@@ -23,18 +21,14 @@ class Authcontroller {
      try {
        //await otpService.sendBySms(phone, otp);
         await otpService.sendByEmail(email, otp);
-       return res.json({
+        return res.json({
          hash: `${hash}.${expires}`,
          email,
          otp,
        });
      } catch (err) {
-       console.log(err);
        res.status(500).json({ message: "message sending failed" });
      }
-    res.json({
-      hash: `${hash}.${expires}`,
-    });
   }
   async verifyOtp(req, res) {
     const { otp, hash, email } = req.body;
@@ -45,14 +39,14 @@ class Authcontroller {
     const [hashedOtp, expires] = hash.split(".");
 
     if (Date.now() > expires) {
-      res.status(400).json({ message: "otp expired..!" });
+      res.status(400).json({ message: "OTP Expired..!" });
       return
     }
 
     const data = `${email}.${otp}.${expires}`;
     const isValid = await otpService.verifyOtp(hashedOtp, data);
     if (!isValid) {
-      res.status(400).json({ message: "invalid otp..!" });
+      res.status(400).json({ message: "Invalid OTP..!" });
       return;
     }
 
@@ -74,15 +68,22 @@ class Authcontroller {
      });
 
      await tokenService.storeRefreshToken(refreshToken, user._id);
-
+    try {
      res.cookie( 'refreshToken', refreshToken, {
        maxAge: 1000 * 60 * 60 * 24 * 30,
-       httpOnly: true,
+       sameSite: "none",
+       secure: true,
+       httpOnly: true
      });
      res.cookie( 'accessToken', accessToken, {
        maxAge: 1000 * 60 * 60 * 24 * 30,
        httpOnly: true,
+       sameSite: "none",
+        secure: true,
      });
+    } catch (e) {
+      console.log(e)
+    }
 
 
 
@@ -132,6 +133,7 @@ class Authcontroller {
      res.send({ user: userDto });
   }
   async refresh(req, res) {
+    
         console.log("refresh called");
         // get refresh token from cookie
         const { refreshToken: refreshTokenFromCookie } = req.cookies;
@@ -176,11 +178,15 @@ class Authcontroller {
         res.cookie('refreshToken', refreshToken, {
             maxAge: 1000 * 60 * 60 * 24 * 30,
             httpOnly: true,
+            sameSite: "none",
+            secure: true,
         });
 
         res.cookie('accessToken', accessToken, {
             maxAge: 1000 * 60 * 60 * 24 * 30,
             httpOnly: true,
+            sameSite: "none",
+            secure: true,
         });
         // response
         const userDto = new UserDto(user);

@@ -26,7 +26,8 @@ app.use("/storage", express.static("storage"));
 app.use(cors(corsOption));
 app.use(router);
 app.get("/", (req, res) => {
-  res.send("hello from server");
+  
+  res.send(req.cookies);
 });
 server.listen(PORT, () => console.log(`Listening on port  ${PORT}`));
 
@@ -36,9 +37,8 @@ io.on("connection", (socket) => {
   const pubkey = socket.handshake.query.pubkey;
   socket.join(id);
   //when ceonnect
-  console.log("a user connected.");
-
-    console.log(id)
+  //console.log("a user connected.");
+  //console.log(id)
   socket.on("send-message", ({ chatId, recipient, payload, type, time, status }) => {
     const message = { chatId, recipient, payload, type, time, status };
     console.log(message)

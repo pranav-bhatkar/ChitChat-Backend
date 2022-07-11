@@ -13,7 +13,6 @@ class ChatController {
   async getConversations(req, res) {
     const { owner } = req.body;
     const conversations = await ChatServices.getConversations(owner);
-    console.log(conversations)
     return res.json(conversations);
   }
   async getConversation(req, res) {
@@ -42,7 +41,6 @@ class ChatController {
     if(conversation === null){
     try {
       conversation = await ChatServices.createConversation({recipients, conversationType})
-      console.log(conversation);
       return res.json({conversation});
     } catch (err) {
       console.log(err)
