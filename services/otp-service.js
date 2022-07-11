@@ -2,9 +2,9 @@ const crypto = require("crypto");
 const nodemailer = require('nodemailer');
 const hashservices = require("./hash-services");
 
-const smssid = process.env.SMS_SID;
-const smsauthtoken = process.env.SMS_AUTH_TOKEN;
-const twilio = require("twilio")(smssid, smsauthtoken, { lazyLoading: true });
+// const smssid = process.env.SMS_SID;
+// const smsauthtoken = process.env.SMS_AUTH_TOKEN;
+// const twilio = require("twilio")(smssid, smsauthtoken, { lazyLoading: true });
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
